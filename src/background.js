@@ -1,3 +1,5 @@
+const loginUrlRegEx = /^https:\/\/twitter.com\/(?:i\/|login).*/;
+const photoUrlRegEx = /.*\/photo\/\d+$/;
 const filter = {
     url: [
         {
@@ -14,8 +16,8 @@ function updateCss(details) {
         }
     });
 
-    if (!details.url.startsWith("https://twitter.com/i/") &&
-        !details.url.startsWith("https://twitter.com/login")) {
+    if (!loginUrlRegEx.test(details.url) &&
+        !photoUrlRegEx.test(details.url)) {
         chrome.scripting.insertCSS({
             files: ["extension.css"],
             target: {
@@ -30,6 +32,23 @@ chrome.webNavigation.onCompleted.addListener(
     filter
 );
 chrome.webNavigation.onHistoryStateUpdated.addListener(
-    updateCss,
+    details => {
+        updateCss(details);
+
+        if (photoUrlRegEx.test(details.url)) {
+            // Remove login pop-up on top of photo
+            chrome.scripting.executeScript({
+                target: { tabId: details.tabId },
+                func: () => {
+                    const spanSearchResult = document.querySelectorAll("#layers div[role=group] div[role=button] span");
+                    const loginButton = Array.from(spanSearchResult).find(el => el.innerHTML === "Log in");
+                    if (loginButton) {
+                        const parentGroup = loginButton.closest("div[role=group]");
+                        parentGroup.style.display = "none";
+                    }
+                }
+            });
+        }
+    },
     filter
 );

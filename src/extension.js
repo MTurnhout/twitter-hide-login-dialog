@@ -1,49 +1,74 @@
 const loginUrlRegEx = /^\/(?:i\/|login).*/;
-const observerLayers = new MutationObserver(hideLoginLayer);
+const observerLayers = new MutationObserver(onLayersMutations);
 let observerParent;
+let layersElement;
 
 window.addEventListener('load', checkUntilLayersExist);
 
 /**
  * Wait till React application is done loading and
- * start observing layers elements.
+ * start observing layers elements and parent.
  */
 function checkUntilLayersExist() {
     const checkExistInterval = setInterval(() => {
-        const layersElement = document.getElementById("layers");
+        layersElement = document.getElementById("layers");
         if (layersElement) {
             clearInterval(checkExistInterval);
-            
-            observerLayers.disconnect();
-            observerLayers.observe(layersElement, { childList: true });
-            
-            if (!observerParent) {
-                observerParent = new MutationObserver(checkUntilLayersExist);
-                observerParent.observe(layersElement.parentNode, { childList: true });
-            }
+
+            startObservingLayersAndParent();
         }
     }, 100);
 }
 
 /**
- * Hide layer that contains login on appropriate pages.
+ * Start observing layers elements and parent.
  */
-function hideLoginLayer() {
+function startObservingLayersAndParent() {
+    observerLayers.observe(layersElement, { childList: true });
+    
+    if (!observerParent) {
+        observerParent = new MutationObserver(onLayersParentMutations);
+        observerParent.observe(layersElement.parentNode, { childList: true });
+    }
+}
+
+/**
+ * Monitor if login dialog is added and hide on appropriate page.
+ * @param {MutationRecord[]} mutations 
+ */
+function onLayersMutations(mutations) {
     if (loginUrlRegEx.test(window.location.pathname))
         return;
 
-    const layersElement = document.getElementById("layers");
-    const loginButton = document.evaluate(
-        ".//div[@role='dialog']//span[text()='Log in']",
-        layersElement,
-        null,
-        XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null).singleNodeValue;
-
-    if (loginButton) {
-        const loginLayer = loginButton.closest("#layers > div");
-        loginLayer.style.display = "none";
+    for (const mutation of mutations) {
+        for (const addedNode of mutation.addedNodes) {
+            const isLoginDialog = document.evaluate(
+                ".//div[@role='dialog']//span[text()='Log in']",
+                addedNode,
+                null,
+                XPathResult.BOOLEAN_TYPE,
+                null).booleanValue;
         
-        document.documentElement.style.overflow = "auto";
+            if (isLoginDialog) {
+                addedNode.style.display = "none";
+                
+                document.documentElement.style.overflow = "auto";
+            }
+        }
+    }
+}
+
+/**
+ * Monitor if layers element is removed and observe new layers element.
+ * @param {MutationRecord[]} mutations 
+ */
+function onLayersParentMutations(mutations) {
+    for (const mutation of mutations) {
+        for (const removedNode of mutation.removedNodes) {
+            if (removedNode === layersElement) {
+                observerLayers.disconnect();
+                checkUntilLayersExist();
+            }
+        }
     }
 }

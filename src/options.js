@@ -28,6 +28,7 @@ class TwitterHideLoginDialogAddonOptions {
       this.#showValidation("Input is mandatory.");
       return;
     }
+
     chrome.storage.sync.set(
       {
         options: { loginButtonText },
@@ -47,6 +48,7 @@ class TwitterHideLoginDialogAddonOptions {
     var status = document.getElementById("status");
     status.className = isValid ? "valid-feedback" : "invalid-feedback";
     status.textContent = text;
+
     setTimeout(function () {
       status.textContent = "";
     }, 750);
@@ -54,10 +56,14 @@ class TwitterHideLoginDialogAddonOptions {
 }
 
 const options = new TwitterHideLoginDialogAddonOptions();
-document.addEventListener("DOMContentLoaded", options.restoreOptions);
-document
-  .getElementById("saveButton")
-  .addEventListener("click", options.saveOptions);
+document.addEventListener("DOMContentLoaded", () => {
+  options.restoreOptions();
+});
+
+document.getElementById("saveButton").addEventListener("click", () => {
+  options.saveOptions();
+});
+
 document
   .getElementById("loginButtonTextInput")
   .addEventListener("keydown", (event) => {

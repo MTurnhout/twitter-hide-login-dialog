@@ -36,6 +36,7 @@ class TwitterHideLoginDialogAddon {
     if (document.documentElement.style.overflow === "auto") {
       return;
     }
+
     if (
       TwitterHideLoginDialogAddon.#loginUrlRegEx.test(window.location.pathname)
     ) {
@@ -47,13 +48,16 @@ class TwitterHideLoginDialogAddon {
       return;
     }
 
-    const loginButtonText = this.#options.loginButtonText?.replace("'", "\\'");
+    const loginButtonText = this.#options.loginButtonText?.replace(
+      /'/g,
+      `',"'",'`
+    );
     if (!loginButtonText) {
       return;
     }
 
     const loginButtonElement = document.evaluate(
-      `.//div[@role='dialog']//span[text()='${loginButtonText}']`,
+      `.//div[@role='dialog']//span[text()=concat('${loginButtonText}','')]`,
       layerElement,
       null,
       XPathResult.ANY_UNORDERED_NODE_TYPE,
@@ -82,6 +86,7 @@ class TwitterHideLoginDialogAddon {
         Object.assign(this.#options, data.options);
       }
     );
+
     chrome.storage.onChanged.addListener((changes, area) => {
       if (area === "sync" && changes.options?.newValue) {
         Object.assign(this.#options, changes.options.newValue);

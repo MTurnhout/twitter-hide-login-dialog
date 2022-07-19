@@ -25,17 +25,38 @@ class TwitterHideLoginDialogAddonOptions {
       .getElementById("loginButtonTextInput")
       .value?.trim();
     if (!loginButtonText) {
-      this.#showValidation("Input is mandatory.");
+      var validationMessage = chrome.i18n.getMessage(
+        "options_validation_input_mandatory"
+      );
+      this.#showValidation(validationMessage);
       return;
     }
 
+    const saveMessage = chrome.i18n.getMessage("options_save_success");
     chrome.storage.sync.set(
       {
         options: { loginButtonText },
       },
       () => {
-        this.#showValidation("Options saved.", true);
+        this.#showValidation(saveMessage, true);
       }
+    );
+  }
+
+  /**
+   * Set localized content in options page.
+   */
+  setLocalizedText() {
+    document.title = chrome.i18n.getMessage("options_page_title");
+    document.getElementById("pageHeader").textContent = chrome.i18n.getMessage(
+      "options_page_header"
+    );
+    document.getElementById("loginButtonTextLabel").textContent =
+      chrome.i18n.getMessage("options_page_input_login_button_text_label");
+    document.getElementById("loginButtonTextInfo").textContent =
+      chrome.i18n.getMessage("options_page_input_login_button_text_info");
+    document.getElementById("saveButton").textContent = chrome.i18n.getMessage(
+      "options_page_save_button_text"
     );
   }
 
@@ -58,6 +79,7 @@ class TwitterHideLoginDialogAddonOptions {
 const options = new TwitterHideLoginDialogAddonOptions();
 document.addEventListener("DOMContentLoaded", () => {
   options.restoreOptions();
+  options.setLocalizedText();
 });
 
 document.getElementById("saveButton").addEventListener("click", () => {

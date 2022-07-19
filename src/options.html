@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Options</title>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="options.css" />
     <script src="options.js" defer></script>
   </head>
   <body>
-    <h1>Options</h1>
+    <h1 id="pageHeader"></h1>
     <div class="mb-3">
-      <label for="loginButtonTextInput">Login button text:</label>
+      <label id="loginButtonTextLabel" for="loginButtonTextInput"></label>
       <input type="text" id="loginButtonTextInput" />
-      <small>Login dialog is found by text in the login button.</small>
+      <small id="loginButtonTextInfo"></small>
     </div>
     <div>
-      <button type="button" id="saveButton">Save</button>
+      <button type="button" id="saveButton"></button>
       <small id="status"></small>
     </div>
   </body>

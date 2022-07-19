@@ -1,0 +1,29 @@
+{
+  "extension_name": {
+    "message": "Twitter Hide Login Dialog"
+  },
+  "extension_description": {
+    "message": "An add-on that hides the login dialog on Twitter."
+  },
+  "options_page_title": {
+    "message": "Options"
+  },
+  "options_page_header": {
+    "message": "Options"
+  },
+  "options_page_input_login_button_text_label": {
+    "message": "Login button text:"
+  },
+  "options_page_input_login_button_text_info": {
+    "message": "Login dialog is found by text in the login button."
+  },
+  "options_page_save_button_text": {
+    "message": "Save"
+  },
+  "options_validation_input_mandatory": {
+    "message": "Input is mandatory."
+  },
+  "options_save_success": {
+    "message": "Options saved successfully."
+  }
+}

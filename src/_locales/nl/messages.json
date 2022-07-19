@@ -1,0 +1,29 @@
+{
+  "extension_name": {
+    "message": "Twitter Verberg Inlogvenster"
+  },
+  "extension_description": {
+    "message": "Een add-on die het inlogvenster verbergt op Twitter."
+  },
+  "options_page_title": {
+    "message": "Opties"
+  },
+  "options_page_header": {
+    "message": "Opties"
+  },
+  "options_page_input_login_button_text_label": {
+    "message": "Login-knop tekst:"
+  },
+  "options_page_input_login_button_text_info": {
+    "message": "Inlogvenster wordt gevonden door tekst in de login-knop."
+  },
+  "options_page_save_button_text": {
+    "message": "Opslaan"
+  },
+  "options_validation_input_mandatory": {
+    "message": "Invoer is verplicht."
+  },
+  "options_save_success": {
+    "message": "Opties zijn succesvol opgeslagen."
+  }
+}

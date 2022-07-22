@@ -1,4 +1,4 @@
-import { TwitterHideLoginDialogAddonOptions } from "./js/TwitterHideLoginDialogAddonOptions.js";
+import { TwitterHideLoginDialogAddonOptions } from "./TwitterHideLoginDialogAddonOptions.js";
 
 const options = new TwitterHideLoginDialogAddonOptions();
 

@@ -12,13 +12,13 @@
   },
   "content_scripts": [
     {
-      "js": ["js/TwitterHideLoginDialogAddon.js", "extension.js"],
+      "js": ["content/TwitterHideLoginDialogAddon.js", "content/extension.js"],
       "matches": ["https://twitter.com/*", "https://mobile.twitter.com/*"]
     }
   ],
   "homepage_url": "https://github.com/MTurnhout/twitter-hide-login-dialog",
   "options_ui": {
-    "page": "options.html",
+    "page": "options/options.html",
     "open_in_tab": false
   },
   "permissions": ["storage"]

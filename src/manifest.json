@@ -12,8 +12,8 @@
   },
   "content_scripts": [
     {
-      "js": ["extension.js"],
-      "matches": ["https://*.twitter.com/*"]
+      "js": ["js/TwitterHideLoginDialogAddon.js", "extension.js"],
+      "matches": ["https://twitter.com/*", "https://mobile.twitter.com/*"]
     }
   ],
   "homepage_url": "https://github.com/MTurnhout/twitter-hide-login-dialog",
